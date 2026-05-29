@@ -44,9 +44,7 @@ export async function GET(
   const dest = escapeHtml(link.destination_url);
   const title = escapeHtml(link.og_title);
   const image = escapeHtml(link.image_url);
-  const description = escapeHtml(link.og_description || "Facebook.com");
-  const pageUrl = escapeHtml(new URL(request.url).href.split("?")[0] ?? "");
-  const ogHead = buildOgHeadHtml({ title, image, pageUrl, description });
+  const ogHead = buildOgHeadHtml({ title, image });
 
   if (isFbInApp) {
     return new Response(

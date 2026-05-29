@@ -54,7 +54,7 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
     const formData = new FormData();
     formData.append("destinationUrl", destinationUrl);
     formData.append("ogTitle", ogTitle);
-    formData.append("ogDescription", "Facebook.com");
+    formData.append("ogDescription", "");
     formData.append("image", image);
 
     const res = await fetch("/api/links", { method: "POST", body: formData });
@@ -116,10 +116,6 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
               onChange={(e) => setOgTitle(e.target.value)}
               className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
             />
-            <p className="mt-2 text-xs text-slate-500">
-              Baris bawah preview FB:{" "}
-              <span className="font-bold">Facebook.com</span> (deskripsi OG)
-            </p>
           </div>
 
           <div>
@@ -169,39 +165,10 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
-                <p className="mb-2 font-bold">Cara post (domain atas = URL link)</p>
-                <ol className="list-decimal space-y-1 pl-4 text-xs leading-relaxed">
-                  <li>
-                    Tempel link → tunggu preview → <strong>hapus teks URL</strong>{" "}
-                    di atas kartu (supaya tidak dobel).
-                  </li>
-                  <li>
-                    Baris <strong>{previewHost}</strong> di atas judul{" "}
-                    <em>tidak bisa</em> diganti jadi facebook.com via meta tag
-                    (aturan Facebook).
-                  </li>
-                  <li>
-                    Agar tanpa baris domain: post sebagai{" "}
-                    <strong>Foto</strong> (unduh gambar) + taruh link di komentar.
-                  </li>
-                  <li>
-                    Atau pakai <strong>custom domain</strong> di Vercel (mis.{" "}
-                    <code className="rounded bg-amber-100 px-1">go.ngelink.net</code>
-                    ) supaya baris atas bukan vercel.app.
-                  </li>
-                </ol>
-                {imageUrl && (
-                  <a
-                    href={imageUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3 inline-block rounded-lg bg-amber-800 px-3 py-2 text-xs font-bold text-white"
-                  >
-                    Unduh gambar untuk post Foto
-                  </a>
-                )}
-              </div>
+              <p className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-600">
+                Tempel link → tunggu preview besar muncul → hapus teks URL di
+                atas kartu. Jangan pakai deskripsi OG (memicu preview kecil).
+              </p>
             </div>
           )}
         </form>
@@ -229,7 +196,6 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
               <p className="mt-0.5 line-clamp-2 text-sm font-semibold text-[#e4e6eb]">
                 {ogTitle || "Judul postingan"}
               </p>
-              <p className="mt-0.5 text-xs text-[#b0b3b8]">Facebook.com</p>
             </div>
           </div>
         </div>

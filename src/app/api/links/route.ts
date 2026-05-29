@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateSlug } from "@/lib/slug";
-import { FACEBOOK_OG_DESCRIPTION } from "@/lib/og-meta";
 import { processOgImage } from "@/lib/og-image";
 import { getSiteUrl } from "@/lib/site-url";
 import {
@@ -29,7 +28,7 @@ export async function POST(request: Request) {
   const parsed = createLinkSchema.safeParse({
     destinationUrl,
     ogTitle,
-    ogDescription: FACEBOOK_OG_DESCRIPTION,
+    ogDescription: "",
   });
 
   if (!parsed.success) {
@@ -101,7 +100,7 @@ export async function POST(request: Request) {
       slug,
       destination_url: parsed.data.destinationUrl,
       og_title: parsed.data.ogTitle,
-      og_description: FACEBOOK_OG_DESCRIPTION,
+      og_description: "",
       image_url: publicUrl,
     })
     .select()
