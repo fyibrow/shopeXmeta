@@ -1,37 +1,33 @@
-/** Label domain di preview Facebook (bukan URL situs kita). */
-export const FACEBOOK_OG_DOMAIN = "facebook.com";
+/** Teks deskripsi di preview (baris abu-abu di bawah judul). */
 export const FACEBOOK_OG_DESCRIPTION = "Facebook.com";
-export const FACEBOOK_OG_URL = "https://www.facebook.com/";
 
+/**
+ * Meta OG untuk crawler Facebook — sama seperti versi PHP asli.
+ * og:url HARUS URL halaman ini agar gambar & judul ikut ter-scrape.
+ * Jangan arahkan og:url ke facebook.com (preview jadi rusak).
+ */
 export function buildOgHeadHtml(options: {
   title: string;
   image: string;
+  pageUrl: string;
+  description?: string;
 }): string {
   const title = options.title;
   const image = options.image;
-  const desc = FACEBOOK_OG_DESCRIPTION;
-  const siteName = FACEBOOK_OG_DOMAIN;
-  const ogUrl = FACEBOOK_OG_URL;
+  const pageUrl = options.pageUrl;
+  const desc = options.description ?? FACEBOOK_OG_DESCRIPTION;
 
   return `
   <meta charset="UTF-8">
   <title>${title}</title>
-  <meta name="description" content="${desc}">
-  <link rel="canonical" href="${ogUrl}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="${ogUrl}">
-  <meta property="og:site_name" content="${siteName}">
+  <meta property="og:url" content="${pageUrl}">
+  <meta property="og:site_name" content="facebook.com">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${desc}">
   <meta property="og:image" content="${image}">
   <meta property="og:image:secure_url" content="${image}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:domain" content="${siteName}">
-  <meta name="twitter:url" content="${ogUrl}">
-  <meta name="twitter:title" content="${title}">
-  <meta name="twitter:description" content="${desc}">
-  <meta name="twitter:image" content="${image}">`.trim();
+  <meta property="og:image:type" content="image/jpeg">`.trim();
 }
