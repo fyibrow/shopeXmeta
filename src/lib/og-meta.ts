@@ -22,7 +22,7 @@ export function buildOgHeadHtml(options: {
   <title>${title}</title>
   <meta property="og:type" content="website">
   <meta property="og:url" content="${pageUrl}">
-  <meta property="og:site_name" content="facebook.com">
+  <meta property="og:site_name" content="FACEBOOK.COM">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${desc}">
   <meta property="og:image" content="${image}">
