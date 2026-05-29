@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { buildOgHeadHtml } from "@/lib/og-meta";
 import { analyzeUserAgent } from "@/lib/user-agent";
 
 function escapeHtml(value: string) {
@@ -42,8 +43,8 @@ export async function GET(
 
   const dest = escapeHtml(link.destination_url);
   const title = escapeHtml(link.og_title);
-  const description = escapeHtml(link.og_description);
   const image = escapeHtml(link.image_url);
+  const ogHead = buildOgHeadHtml({ title, image });
 
   if (isFbInApp) {
     return new Response(
@@ -72,21 +73,16 @@ export async function GET(
       `<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>${title}</title>
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="${title}" />
-  <meta property="og:description" content="${description}" />
-  <meta property="og:image" content="${image}" />
-  <meta property="og:image:secure_url" content="${image}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+${ogHead}
 </head>
 <body><p>${title}</p></body>
 </html>`,
       {
         status: 200,
-        headers: { "Content-Type": "text/html; charset=utf-8" },
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "public, max-age=3600",
+        },
       },
     );
   }
@@ -95,13 +91,8 @@ export async function GET(
     `<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>${title}</title>
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="${title}" />
-  <meta property="og:description" content="${description}" />
-  <meta property="og:image" content="${image}" />
-  <meta http-equiv="refresh" content="1;url=${dest}">
+${ogHead}
+<meta http-equiv="refresh" content="1;url=${dest}">
 </head>
 <body style="font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;background:#f0f2f5">
   <p>Memuat konten...</p>

@@ -5,7 +5,6 @@ import { useState } from "react";
 export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
   const [destinationUrl, setDestinationUrl] = useState("");
   const [ogTitle, setOgTitle] = useState("");
-  const [ogDescription, setOgDescription] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -37,7 +36,7 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
     const formData = new FormData();
     formData.append("destinationUrl", destinationUrl);
     formData.append("ogTitle", ogTitle);
-    formData.append("ogDescription", ogDescription || "Facebook.com");
+    formData.append("ogDescription", "Facebook.com");
     formData.append("image", image);
 
     const res = await fetch("/api/links", { method: "POST", body: formData });
@@ -87,31 +86,21 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-semibold uppercase text-slate-400">
-                Judul OG
-              </label>
-              <input
-                type="text"
-                required
-                value={ogTitle}
-                onChange={(e) => setOgTitle(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
-              />
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase text-slate-400">
-                Deskripsi
-              </label>
-              <input
-                type="text"
-                value={ogDescription}
-                onChange={(e) => setOgDescription(e.target.value)}
-                placeholder="Facebook.com"
-                className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
-              />
-            </div>
+          <div>
+            <label className="text-xs font-semibold uppercase text-slate-400">
+              Judul OG
+            </label>
+            <input
+              type="text"
+              required
+              value={ogTitle}
+              onChange={(e) => setOgTitle(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+            />
+            <p className="mt-2 text-xs text-slate-500">
+              Domain preview Facebook selalu{" "}
+              <span className="font-bold uppercase">facebook.com</span>
+            </p>
           </div>
 
           <div>
@@ -173,7 +162,7 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
             </div>
             <div className="p-4">
               <p className="text-[10px] font-bold uppercase text-slate-400">
-                {(ogDescription || "FACEBOOK.COM").toUpperCase()}
+                FACEBOOK.COM
               </p>
               <p className="mt-1 text-sm font-bold text-slate-900">
                 {ogTitle || "Judul postingan"}

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateSlug } from "@/lib/slug";
+import { FACEBOOK_OG_DESCRIPTION } from "@/lib/og-meta";
 import { getSiteUrl } from "@/lib/site-url";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -22,13 +23,12 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const destinationUrl = String(formData.get("destinationUrl") ?? "");
   const ogTitle = String(formData.get("ogTitle") ?? "");
-  const ogDescription = String(formData.get("ogDescription") ?? "Facebook.com");
   const image = formData.get("image");
 
   const parsed = createLinkSchema.safeParse({
     destinationUrl,
     ogTitle,
-    ogDescription: ogDescription || "Facebook.com",
+    ogDescription: FACEBOOK_OG_DESCRIPTION,
   });
 
   if (!parsed.success) {
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
       slug,
       destination_url: parsed.data.destinationUrl,
       og_title: parsed.data.ogTitle,
-      og_description: parsed.data.ogDescription ?? "Facebook.com",
+      og_description: FACEBOOK_OG_DESCRIPTION,
       image_url: publicUrl,
     })
     .select()
