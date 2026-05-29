@@ -133,6 +133,10 @@ export function LinkGenerator({ onCreated }: { onCreated?: () => void }) {
               onChange={(e) => onImageChange(e.target.files?.[0] ?? null)}
               className="mt-1 w-full text-sm file:mr-4 file:rounded-full file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-white"
             />
+            <p className="mt-1 text-xs text-slate-500">
+              Otomatis di-crop ke 1200×630 untuk preview FB{" "}
+              <strong>gambar besar</strong> (bukan thumbnail kecil).
+            </p>
           </div>
 
           <button

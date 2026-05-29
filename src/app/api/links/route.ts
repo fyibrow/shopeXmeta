@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateSlug } from "@/lib/slug";
 import { FACEBOOK_OG_DESCRIPTION } from "@/lib/og-meta";
+import { processOgImage } from "@/lib/og-image";
 import { getSiteUrl } from "@/lib/site-url";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -56,18 +57,27 @@ export async function POST(request: Request) {
     );
   }
 
-  const ext = image.type === "image/png" ? "png" : image.type === "image/webp" ? "webp" : "jpg";
   const slug = generateSlug();
-  const path = `${slug}-${Date.now()}.${ext}`;
+  const path = `${slug}-${Date.now()}.jpg`;
 
   const admin = createAdminClient();
-  const buffer = Buffer.from(await image.arrayBuffer());
+  const raw = Buffer.from(await image.arrayBuffer());
+  let buffer: Buffer;
+  try {
+    buffer = await processOgImage(raw);
+  } catch {
+    return NextResponse.json(
+      { error: "Gagal memproses gambar. Coba file JPEG/PNG lain." },
+      { status: 400 },
+    );
+  }
 
   const { error: uploadError } = await admin.storage
     .from("og-images")
     .upload(path, buffer, {
-      contentType: image.type,
+      contentType: "image/jpeg",
       upsert: false,
+      cacheControl: "31536000",
     });
 
   if (uploadError) {
