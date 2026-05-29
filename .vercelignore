@@ -1,0 +1,4 @@
+uploads/
+database.json
+*.php
+.env.local
